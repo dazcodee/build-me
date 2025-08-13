@@ -7,8 +7,4 @@ function Home() {
   );
 }
 
-function teste2() {
-  console.log("tentaiva errada");
-}
-
 export default Home;
