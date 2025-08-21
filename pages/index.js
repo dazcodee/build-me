@@ -1,9 +1,17 @@
+// pages/index.js
+import Head from "next/head";
+
 function Home() {
   return (
     <>
-      <h1>Eu te amo mãe❤️ </h1>
-      <p1>E tenho muito orgulho de você</p1>
-      <p1>fiz esse site só pra te dizer isso hehe</p1>
+      <Head>
+        <title>Para Minha Mãe</title>
+      </Head>
+      <div className="container">
+        <h1>Eu te amo mãe ❤️</h1>
+        <p>E tenho muito orgulho de você!</p>
+        <p>Fiz esse site só pra te dizer isso hehe</p>
+      </div>
     </>
   );
 }

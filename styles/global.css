@@ -1,0 +1,92 @@
+/* Importa a fonte 'Poppins' do Google Fonts para um visual moderno */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+/* --- Estilos Gerais --- */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f7f9fc; /* Fundo suave, quase branco */
+  color: #333; /* Cor de texto principal escura */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa a altura total da tela */
+  text-align: center;
+}
+
+/* --- Container Principal --- */
+.container {
+  background-color: #fff; /* Fundo branco para a caixa de conteúdo */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05); /* Sombra suave para um efeito 3D sutil */
+  max-width: 600px;
+  width: 90%;
+  margin: 20px;
+  box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
+}
+
+/* --- Título Principal --- */
+h1 {
+  font-size: 2.5em; /* Tamanho grande para o título */
+  color: #4a5c9a; /* Azul marinho suave */
+  font-weight: 600; /* Negrito sem ser pesado */
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}
+
+/* --- Subtítulo ou Texto de Destaque --- */
+h2 {
+  font-size: 1.5em;
+  color: #6a6a6a;
+  font-weight: 400;
+  margin-top: 0;
+}
+
+/* --- Parágrafos de Texto --- */
+p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1.5em;
+}
+
+/* --- Botão (se você quiser adicionar um) --- */
+.button {
+  display: inline-block;
+  background-color: #7a9eeb; /* Azul claro bonito */
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 50px; /* Borda arredondada para um visual suave */
+  text-decoration: none; /* Remove sublinhado do link */
+  font-weight: 600;
+  transition: background-color 0.3s ease; /* Transição suave na mudança de cor */
+}
+
+/* Efeito ao passar o mouse sobre o botão */
+.button:hover {
+  background-color: #5d83d1;
+}
+
+/* --- Imagem (se você for adicionar uma foto dela) --- */
+.photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; /* Faz a imagem ficar redonda */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+  border: 4px solid #f0f2f5; /* Borda suave */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* --- Estilos para celular (responsividade) --- */
+@media (max-width: 768px) {
+  .container {
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+}
