@@ -19,7 +19,7 @@ const PRESENTES_BASE = [
   "Viseira Nova ☀️",
   "Sessão de Cinema 🎬",
   "Jantar Especial 🍝",
-  "Raqueteira Nova 🎒",
+  "Uma caneca!",
 ];
 
 export default function Home() {
@@ -142,16 +142,32 @@ export default function Home() {
         {/* FASE 2: A CARTA DE GRATIDÃO */}
         {fase === "carta" && (
           <>
-            <h1>Você conseguiu! 🎉</h1>
-            <p>Mãe, eu queria deixar registrado aqui o quanto eu te amo.</p>
-            <p>
-              Sei que a vida às vezes é corrida e eu posso ser difícil de lidar,
-              mas eu reconheço cada sacrifício que você faz. Obrigado por me
-              apoiar nas minhas ideias, por me ajudar com meu currículo, por
-              estar sempre lá. Peço desculpas pelas vezes que falhei, mas saiba
-              que meu maior objetivo é te dar orgulho e ajudar a nossa família.
+            <h1>Você conseguiu, mãe! 🎉</h1>
+
+            <p style={{ textAlign: "justify", marginBottom: "15px" }}>
+              Mãe, eu queria usar esse espaço para deixar registrado o quanto
+              você é essencial para mim. Eu sei que, ultimamente, as coisas têm
+              sido pesadas para todos nós. A rotina de trabalho na produção
+              cansa, o estresse bate forte e a pressão do dia a dia acaba
+              cobrando o seu preço.
             </p>
-            <p>Você é minha inspiração.</p>
+
+            <p style={{ textAlign: "justify", marginBottom: "15px" }}>
+              Eu confesso que acabo me fechando muitas vezes, ou sendo difícil
+              de lidar. Peço desculpas pelas vezes que falhei ou deixei a
+              exaustão falar mais alto. Meu estresse não diminui em nada a
+              gratidão que eu sinto por você. Eu vejo o seu esforço. Obrigado
+              por estar sempre lá, me ajudando até com as coisas mais simples e
+              por ser a base da nossa casa.
+            </p>
+
+            <p style={{ textAlign: "justify", marginBottom: "20px" }}>
+              Tudo o que eu faço, os meus projetos e a minha busca para ser
+              alguém melhor, é para um dia poder retribuir um pouco de tudo o
+              que você suporta por nós. Meu maior objetivo é dar orgulho pra
+              você. Te amo!
+            </p>
+
             <button className="button" onClick={() => setFase("sorteio")}>
               Ir para os Presentes 🎁
             </button>
