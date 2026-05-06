@@ -102,3 +102,33 @@ p {
   font-weight: bold;
   margin-top: 15px;
 }
+
+/* --- Raspadinha --- */
+.card-raspadinha {
+  aspect-ratio: auto;
+  min-height: 100px;
+  background-color: #e6a817;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  transition: all 0.3s;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  color: #4a4031;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.card-raspadinha:hover {
+  background-color: #ffc107;
+}
+
+.card-raspadinha.revelado {
+  background-color: #fff9e6;
+  border: 2px dashed #e6a817;
+  cursor: default;
+  box-shadow: none;
+}

@@ -1,7 +1,6 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-// Vetor base com os nomes das imagens que devem estar na pasta /public
 const IMAGES = [
   "/foto1.jpg",
   "/foto2.jpg",
@@ -13,32 +12,43 @@ const IMAGES = [
   "/foto8.jpg",
 ];
 
-// Vetor de presentes misturando físicos (até 300 reais) e atitudes
-const PRESENTES = [
-  "Colar de Dachshund lindo! 🐶",
-  "Vale-Dupla no próximo jogo de Beach Tennis! 🎾",
-  "Viseira Nova para os jogos! ☀️",
-  "Vale-Sessão de Cinema com pipoca em casa 🎬",
-  "Vale-Jantar Especial feito por mim 🍝",
-  "Uma Raqueteira Térmica Nova! 🎒",
+// O array original de presentes
+const PRESENTES_BASE = [
+  "Colar de Dachshund 🐶",
+  "Vale-Dupla no Beach 🎾",
+  "Viseira Nova ☀️",
+  "Sessão de Cinema 🎬",
+  "Jantar Especial 🍝",
+  "Raqueteira Nova 🎒",
 ];
 
 export default function Home() {
-  const [fase, setFase] = useState("jogo"); // Fases: jogo -> carta -> sorteio
+  const [fase, setFase] = useState("jogo");
   const [cards, setCards] = useState([]);
   const [viradas, setViradas] = useState([]);
   const [encontradas, setEncontradas] = useState([]);
-  const [presenteSorteado, setPresenteSorteado] = useState(null);
 
-  // Embaralha e prepara as 16 cartas ao carregar a página
+  // Estados da Raspadinha
+  const [presentesEmbaralhados, setPresentesEmbaralhados] = useState([]);
+  const [presentesEscolhidos, setPresentesEscolhidos] = useState([]);
+
+  // Referência para a música de fundo não reiniciar a cada renderização
+  const audioRef = useRef(null);
+
+  // Inicialização (Embaralha jogo da memória e a raspadinha)
   useEffect(() => {
-    const embaralhadas = [...IMAGES, ...IMAGES]
+    const memoryShuffled = [...IMAGES, ...IMAGES]
       .sort(() => Math.random() - 0.5)
       .map((img, id) => ({ id, img }));
-    setCards(embaralhadas);
+    setCards(memoryShuffled);
+
+    const presentesShuffled = [...PRESENTES_BASE].sort(
+      () => Math.random() - 0.5,
+    );
+    setPresentesEmbaralhados(presentesShuffled);
   }, []);
 
-  // Lógica de verificação do Jogo da Memória
+  // Lógica do Jogo da Memória
   useEffect(() => {
     if (viradas.length === 2) {
       const [primeira, segunda] = viradas;
@@ -46,17 +56,17 @@ export default function Home() {
         setEncontradas((prev) => [...prev, primeira, segunda]);
         setViradas([]);
       } else {
-        setTimeout(() => setViradas([]), 1000); // Errou, desvira após 1 seg
+        setTimeout(() => setViradas([]), 1000);
       }
     }
   }, [viradas, cards]);
 
-  // Checa se venceu o jogo
-  useEffect(() => {
-    if (encontradas.length === 16 && encontradas.length > 0) {
-      setTimeout(() => setFase("carta"), 1000);
-    }
-  }, [encontradas]);
+  // Sons de Efeito (Helper function)
+  const tocarEfeito = (nomeDoArquivo) => {
+    const efeito = new Audio(`/${nomeDoArquivo}.mp3`);
+    efeito.volume = 0.5; // Deixa o efeito um pouco mais baixo que a música
+    efeito.play().catch((e) => console.log("Erro no áudio:", e));
+  };
 
   const handleCartaClick = (index) => {
     if (
@@ -64,19 +74,35 @@ export default function Home() {
       !viradas.includes(index) &&
       !encontradas.includes(index)
     ) {
+      tocarEfeito("click"); // Som ao virar carta
       setViradas((prev) => [...prev, index]);
     }
   };
 
-  const sortearPresente = () => {
-    const random = Math.floor(Math.random() * PRESENTES.length);
-    setPresenteSorteado(PRESENTES[random]);
+  // Transição para a Carta e Play na Música
+  const irParaCarta = () => {
+    setFase("carta");
+    audioRef.current = new Audio("/musica.mp3");
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3; // Volume baixo para não atrapalhar a leitura
+    audioRef.current.play().catch((e) => console.log("Erro na música:", e));
+  };
+
+  // Lógica da Raspadinha
+  const handleRaspadinhaClick = (index) => {
+    if (
+      presentesEscolhidos.length < 3 &&
+      !presentesEscolhidos.includes(index)
+    ) {
+      tocarEfeito("tada"); // Som ao revelar presente
+      setPresentesEscolhidos((prev) => [...prev, index]);
+    }
   };
 
   return (
     <>
       <Head>
-        <title>Feliz Dia das Mães!</title>
+        <title>Para Minha Mãe</title>
       </Head>
       <div className="container">
         {/* FASE 1: O JOGO DA MEMÓRIA */}
@@ -99,6 +125,17 @@ export default function Home() {
                 );
               })}
             </div>
+
+            {/* Botão só aparece quando ganha o jogo */}
+            {encontradas.length === 16 && (
+              <button
+                className="button"
+                style={{ marginTop: "20px" }}
+                onClick={irParaCarta}
+              >
+                Continuar ➡️
+              </button>
+            )}
           </>
         )}
 
@@ -116,27 +153,52 @@ export default function Home() {
             </p>
             <p>Você é minha inspiração.</p>
             <button className="button" onClick={() => setFase("sorteio")}>
-              Ir para o seu Presente 🎁
+              Ir para os Presentes 🎁
             </button>
           </>
         )}
 
-        {/* FASE 3: O SORTEIO */}
+        {/* FASE 3: A RASPADINHA */}
         {fase === "sorteio" && (
           <>
-            <h1>Hora do Presente!</h1>
-            <p>Clique no botão abaixo para descobrir o que você ganhou hoje!</p>
+            <h1>Seus Presentes!</h1>
+            <p>
+              Você tem direito a escolher <strong>3 prêmios</strong>. Escolha
+              com sabedoria!
+            </p>
+            <p>Prêmios restantes: {3 - presentesEscolhidos.length}</p>
 
-            {!presenteSorteado ? (
-              <button className="button" onClick={sortearPresente}>
-                Tirar a Sorte! 🎲
-              </button>
-            ) : (
-              <div className="sorteio-box">
-                <p>O seu presente (ou momento) é:</p>
-                <div className="presente-destaque">{presenteSorteado}</div>
+            <div className="grid">
+              {presentesEmbaralhados.map((presente, index) => {
+                const isRevelado = presentesEscolhidos.includes(index);
+                return (
+                  <div
+                    key={index}
+                    className={`card-raspadinha ${isRevelado ? "revelado" : ""}`}
+                    onClick={() => handleRaspadinhaClick(index)}
+                  >
+                    {isRevelado ? (
+                      <span>{presente}</span>
+                    ) : (
+                      <span style={{ fontSize: "2em" }}>❓</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {presentesEscolhidos.length === 3 && (
+              <div className="sorteio-box" style={{ marginTop: "20px" }}>
+                <p>
+                  <strong>Parabéns! Você ganhou:</strong>
+                </p>
+                {presentesEscolhidos.map((idx) => (
+                  <p key={idx} className="presente-destaque">
+                    {presentesEmbaralhados[idx]}
+                  </p>
+                ))}
                 <p style={{ marginTop: "15px", fontSize: "0.9em" }}>
-                  (Tire um print e me mostre para resgatar!)
+                  (Tire um print para resgatar!)
                 </p>
               </div>
             )}
